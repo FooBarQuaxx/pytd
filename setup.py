@@ -5,39 +5,59 @@
 Setup script for pytd.
 """
 
-import setuptools
-
+import os
+from setuptools import setup, find_packages
+from setuptools.command.test import test as TestCommand
 from pytd import __project__, __version__
 
-import os
 if os.path.exists('README.rst'):
     README = open('README.rst').read()
 else:
-    README = ""  # a placeholder, readme is generated on release
-#CHANGES = open('CHANGES.rst').read()
+    README = ""
 
-setuptools.setup(
+class PyTest(TestCommand):
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = ['-v']
+        self.test_suite = True
+    def run_tests(self):
+        import pytest
+        pytest.main(self.test_args)
+
+def parse_requirements(env='prod'):
+    """load requirements from a pip requirements file"""
+    tests_depends = [
+        'pytest>=2.6.3',
+        'webtest',
+        'factory-boy==2.4.1',
+        'Flask-Script',
+        'Flask-DebugToolbar==0.9.1'
+    ]
+    items = open('requirements/prod.txt').readlines()
+    depends = [item.strip() for item in items if item.strip() and not item.startswith('#')]
+    if (os.environ.get("PYTD_ENV") == 'test') or (env == 'test'):
+        depends.extend(tests_depends)
+    return depends
+
+setup(
     name=__project__,
     version=__version__,
-
     description="A flasky application for terminologies search and translation.",
     url='https://github.com/abessifi/pytd',
     author='Ahmed Bessifi',
     author_email='ahmed.bessifi@gmail.com',
-
-    packages=setuptools.find_packages(),
-
+    packages=find_packages(),
     entry_points={'console_scripts': []},
-
-    #long_description=(README + '\n' + CHANGES),
     long_description=(README),
-    license='MIT',
+    license='GPLv3',
     classifiers=[
         'Development Status :: 1 - Planning',
         'Natural Language :: English',
         'Operating System :: GNU/Linux',
         'Programming Language :: Python :: 2.7',
     ],
-
-    #install_requires=open('requirements.txt').readlines(),
+    install_requires=parse_requirements(env='prod'),
+    tests_require=parse_requirements(env='test'),
+    cmdclass = {'test': PyTest},
+    include_package_data=True,
 )
