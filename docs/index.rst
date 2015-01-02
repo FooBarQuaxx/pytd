@@ -16,6 +16,7 @@ Contents:
    project
    tutorial
    code
+   changelog
 
 Indices and tables
 ==================
