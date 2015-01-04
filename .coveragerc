@@ -1,0 +1,8 @@
+[run]
+omit = pytd/tests/*
+
+[xml]
+output = test_reports/coverage.xml
+
+[html]
+directory = test_reports

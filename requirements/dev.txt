@@ -3,7 +3,8 @@
 
 # Testing
 pytest>=2.6.3
-webtest
+pytest-cov==1.8.1
+WebTest==2.0.17
 factory-boy==2.4.1
 
 # Management script

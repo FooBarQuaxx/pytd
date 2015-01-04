@@ -28,7 +28,8 @@ def parse_requirements(env='prod'):
     """load requirements from a pip requirements file"""
     tests_depends = [
         'pytest>=2.6.3',
-        'webtest',
+        'pytest-cov==1.8.1',
+        'WebTest==2.0.17',
         'factory-boy==2.4.1',
         'Flask-Script',
         'Flask-DebugToolbar==0.9.1'
