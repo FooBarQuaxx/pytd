@@ -17,7 +17,7 @@ else:
     app = create_app(DevConfig)
 
 HERE = os.path.abspath(os.path.dirname(__file__))
-TEST_PATH = os.path.join(HERE, 'tests')
+TEST_PATH = os.path.join(HERE, 'pytd/tests')
 
 manager = Manager(app)
 
